@@ -1,43 +1,164 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail } from 'lucide-react';
-
-const LinkedinIcon = ({ size = 24 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className="inline-block">
-    <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.25V10.9H6.46M7.86 6.72a1.49 1.49 0 1 0 0 2.98 1.49 1.49 0 0 0 0-2.98Z"/>
-  </svg>
-);
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 export default function Contact() {
+  const [status, setStatus] = useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus('success');
+        form.reset();
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      setStatus('error');
+    }
+  };
+
   return (
-    <div className="pt-28 pb-16 px-6 max-w-4xl mx-auto space-y-12">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 text-center">
-        <h1 className="text-4xl font-extrabold text-white">Get In Touch</h1>
-        <p className="text-gray-400 text-base max-w-md mx-auto">
-          Feel free to reach out for collaborations, enterprise workflow discussions, or networking.
+    <div className="pt-28 pb-16 px-6 max-w-5xl mx-auto space-y-12">
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+        <h1 className="text-4xl font-extrabold text-white">Get in Touch</h1>
+        <p className="text-gray-400 text-lg">
+          Interested in discussing enterprise ECM, IBM BAW workflows, or consulting opportunities?
         </p>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <a href="mailto:msvreddy02@gmail.com" className="glass-card p-6 rounded-2xl flex items-center gap-4 hover:border-indigo-500 transition">
-          <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
-            <Mail size={24} />
-          </div>
-          <div>
-            <h3 className="text-xs text-gray-400 uppercase font-semibold">Email</h3>
-            <p className="text-white font-medium text-sm">msvreddy02@gmail.com</p>
-          </div>
-        </a>
+      <div className="grid md:grid-cols-5 gap-8">
+        {/* Contact Details Side */}
+        <div className="md:col-span-2 space-y-6">
+          <div className="glass-card p-6 rounded-2xl space-y-6">
+            <h3 className="text-xl font-bold text-white border-b border-white/10 pb-3">Contact Details</h3>
 
-        <a href="https://linkedin.com/in/msvreddy02" target="_blank" rel="noreferrer" className="glass-card p-6 rounded-2xl flex items-center gap-4 hover:border-indigo-500 transition">
-          <div className="p-3 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
-            <LinkedinIcon size={24} />
+            <div className="space-y-4 text-sm">
+              <a href="mailto:msvreddy02@gmail.com" className="flex items-center gap-3 text-gray-300 hover:text-indigo-400 transition">
+                <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  <Mail size={18} />
+                </div>
+                <span>msvreddy02@gmail.com</span>
+              </a>
+
+              <a href="tel:+919381349022" className="flex items-center gap-3 text-gray-300 hover:text-indigo-400 transition">
+                <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  <Phone size={18} />
+                </div>
+                <span>+91 94929 42173</span>
+              </a>
+
+              <div className="flex items-center gap-3 text-gray-300">
+                <div className="p-2.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  <MapPin size={18} />
+                </div>
+                <span>Hyderabad, Telangana, India</span>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 className="text-xs text-gray-400 uppercase font-semibold">LinkedIn</h3>
-            <p className="text-white font-medium text-sm">linkedin.com/in/msvreddy02</p>
-          </div>
-        </a>
+        </div>
+
+        {/* Working Form Side */}
+        <div className="md:col-span-3">
+          <form onSubmit={handleSubmit} className="glass-card p-8 rounded-2xl space-y-5">
+            <h3 className="text-xl font-bold text-white">Send a Message</h3>
+
+            {/* Hidden Input for Web3Forms Access Key */}
+            {/* ⚠️ STEP: Replace 'YOUR_WEB3FORMS_ACCESS_KEY' below with your key from web3forms.com */}
+            <input type="hidden" name="access_key" value="48207200-6752-4e5a-a95f-70666f294b17" />
+            <input type="hidden" name="from_name" value="Portfolio Contact Form" />
+
+            {/* Status Feedback Banners */}
+            {status === 'success' && (
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm flex items-center gap-2">
+                <CheckCircle2 size={18} />
+                <span>Thank you! Your message has been sent successfully.</span>
+              </div>
+            )}
+
+            {status === 'error' && (
+              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm flex items-center gap-2">
+                <AlertCircle size={18} />
+                <span>Please ensure your access key is set, or try emailing directly.</span>
+              </div>
+            )}
+
+            <div className="grid sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-300">Your Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="John Doe"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 transition"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-gray-300">Your Email *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="john@company.com"
+                  className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 transition"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-300">Subject</label>
+              <input
+                type="text"
+                name="subject"
+                placeholder="Enterprise Workflow Inquiry"
+                className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 transition"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-gray-300">Message *</label>
+              <textarea
+                name="message"
+                required
+                rows={5}
+                placeholder="Hi Sai Vardhan, I would like to discuss a project..."
+                className="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-white/10 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-indigo-500 transition resize-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={status === 'submitting'}
+              className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition disabled:opacity-50"
+            >
+              {status === 'submitting' ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" /> Sending Message...
+                </>
+              ) : (
+                <>
+                  <Send size={18} /> Send Message
+                </>
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -1,81 +1,92 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Layers, ShieldCheck, Database, FileText, Cpu, Server } from 'lucide-react';
+import { Layers, ShieldCheck, Cpu, Search } from 'lucide-react';
+import { projectsData } from '../data/projectsData';
+import ArchitectureVisualizer from '../components/ArchitectureVisualizer';
 
 export default function Projects() {
-  const projects = [
-    {
-      title: "Digital Automation for Conventional Services",
-      client: "Ahli Bank",
-      role: "BPM Developer",
-      tech: ["IBM FileNet P8 (CE, PE)", "IBM Content Navigator (ICN)", "IBM BAW v24.0", "Java/J2EE", "REST APIs", "Oracle DB"],
-      description: "Engineered core FileNet object models and integrated IBM BAW process applications with FileNet P8 repositories via REST services and custom Java APIs. Designed operational workflows using Process Designer, establishing custom Work Queues, In-Baskets, and ICN plugins using Java and Dojo.",
-      highlights: [
-        { title: "Object Modeling & Workflow", text: "Configured Object Stores, Document Classes, Property Templates, Choice Lists, and Process Engine Work Queues." },
-        { title: "ICN Customization", text: "Tailored IBM Content Navigator with personalized Desktops, Entry Templates, and custom Java/Dojo plugins ." },
-        { title: "Automated Triggers", text: "Built custom Java Event Actions and Subscriptions for automated document processing and property updates ." },
-        { title: "Security & Compliance", text: "Implemented FileNet ACLs, ACEs, and role-based authorization to strictly satisfy banking regulatory standards ." }
-      ]
-    },
-    {
-      title: "Digital Automation for Islamic Services",
-      client: "Ahli Bank",
-      role: "BPM Developer",
-      tech: ["IBM FileNet P8", "IBM BAW", "IBM BPM 8.6", "Java/J2EE", "RESTful Web Services", "SQL Server"],
-      description: "Built and optimized enterprise ECM and BPM solutions for end-to-end Islamic Account Services and cheque book processing . Led historical document migration and Process Engine performance tuning to accelerate customer request fulfillments .",
-      highlights: [
-        { title: "BAW Process Integration", text: "Integrated IBM BAW process applications with FileNet repositories for automated cheque book request routing and lifecycle management ." },
-        { title: "Legacy Migration", text: "Executed document migration and validation of historical customer records and request files from legacy systems ." },
-        { title: "Performance Tuning", text: "Optimized FileNet search indexing strategies, log analysis, RCA, and queue performance tuning on Process Engine ." },
-        { title: "Custom Java Services", text: "Developed custom Java integration services connecting repositories with core banking middleware ." }
-      ]
-    },
-    {
-      title: "Conventional Account Opening",
-      client: "Ahli Bank",
-      role: "BPM Developer",
-      tech: ["IBM BAW", "IBM FileNet P8", "IBM Content Navigator", "Java", "REST APIs", "Oracle DB"],
-      description: "Designed automated Account Opening processes in IBM BAW integrated directly with IBM FileNet P8 for real-time customer identification document ingestion, verification, and indexing .",
-      highlights: [
-        { title: "Real-time Ingestion", text: "Connected BAW Human Tasks and Business Rules with FileNet for real-time document retrieval during approval steps ." },
-        { title: "Operator Workflows", text: "Configured Process Designer custom Work Queues and ICN Entry Templates for bank verification teams ." },
-        { title: "Automated Metadata Updates", text: "Built Java Event Actions for automated metadata updates upon BAW account opening approvals ." },
-        { title: "System RCA & Diagnostics", text: "Executed log analysis and queue performance tuning across BAW and Process Engine components ." }
-      ]
-    }
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Extract category filters dynamically
+  const categories = ['All', ...new Set(projectsData.map((p) => p.category))];
+
+  // Dynamic search and filter logic
+  const filteredProjects = projectsData.filter((project) => {
+    const matchesCategory = selectedCategory === 'All' || project.category === selectedCategory;
+    const matchesSearch =
+      project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.tech.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="pt-28 pb-16 px-6 max-w-6xl mx-auto space-y-12">
       {/* Page Header */}
       <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass-card text-xs font-semibold text-indigo-400 border border-indigo-500/30">
-          <Cpu size={14} /> 2+ Years Enterprise ECM & BPM Experience 
+          <Cpu size={14} /> 2+ Years Enterprise ECM & BPM Experience
         </div>
         <h1 className="text-4xl font-extrabold text-white">Experience & Major Projects</h1>
-        <p className="text-gray-400 text-lg">Enterprise Banking Automation, IBM BAW Integration & IBM FileNet P8 Integration </p>
+        <p className="text-gray-400 text-lg">Enterprise Banking Automation, IBM BAW Integration & IBM FileNet P8 Integration</p>
       </motion.div>
 
       {/* Main Role Banner */}
       <div className="glass-card p-6 md:p-8 rounded-2xl border-l-4 border-l-indigo-500 flex flex-wrap justify-between items-center gap-4">
         <div>
-          <span className="text-xs uppercase font-semibold tracking-wider text-indigo-400">Current Employer </span>
-          <h2 className="text-2xl font-bold text-white">IBM BAW Developer </h2>
-          <p className="text-gray-300 font-medium">Eidiko Systems Integrators Pvt. Ltd. </p>
+          <span className="text-xs uppercase font-semibold tracking-wider text-indigo-400">Current Employer</span>
+          <h2 className="text-2xl font-bold text-white">IBM BAW Developer</h2>
+          <p className="text-gray-300 font-medium">Eidiko Systems Integrators Pvt. Ltd.</p>
         </div>
         <div className="flex flex-col sm:items-end gap-1">
           <span className="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-xs border border-indigo-500/20 font-semibold">
-            Full-Time Position 
+            Full-Time Position
           </span>
-          <span className="text-xs text-gray-400">Enterprise Content & Process Automation </span>
+          <span className="text-xs text-gray-400">Enterprise Content & Process Automation</span>
         </div>
       </div>
 
-      {/* Project Cards Grid */}
+      {/* Architecture Visualizer Widget */}
+      <ArchitectureVisualizer />
+
+      {/* Search & Dynamic Filter Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center pt-4 border-t border-white/10">
+        <div className="flex flex-wrap gap-2">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold transition ${
+                selectedCategory === cat
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30'
+                  : 'glass-card text-gray-400 hover:text-white border border-white/10'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="relative min-w-60">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search projects or technologies..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900/60 border border-white/10 text-white placeholder-gray-500 text-xs focus:outline-none focus:border-indigo-500 transition"
+          />
+        </div>
+      </div>
+
+      {/* Dynamic Project Cards Grid */}
       <div className="space-y-8">
-        {projects.map((proj, idx) => (
-          <motion.div 
-            key={idx}
+        {filteredProjects.map((proj, idx) => (
+          <motion.div
+            key={proj.id || idx}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
@@ -90,14 +101,12 @@ export default function Projects() {
                 <h3 className="text-2xl font-bold text-white">{proj.title}</h3>
               </div>
               <span className="text-xs font-medium text-gray-300 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
-                Role: {proj.role} 
+                Role: {proj.role}
               </span>
             </div>
 
             {/* Description */}
-            <p className="text-gray-300 text-sm leading-relaxed">
-              {proj.description}
-            </p>
+            <p className="text-gray-300 text-sm leading-relaxed">{proj.description}</p>
 
             {/* Tech Stack Tags */}
             <div className="flex flex-wrap gap-2">
