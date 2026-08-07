@@ -25,7 +25,7 @@ export default function Contact() {
           </div>
           <div>
             <h3 className="text-xs text-gray-400 uppercase font-semibold">Email</h3>
-            <p className="text-white font-medium text-sm">msvreddy02@gmail.com[cite: 1]</p>
+            <p className="text-white font-medium text-sm">msvreddy02@gmail.com</p>
           </div>
         </a>
 
@@ -35,7 +35,7 @@ export default function Contact() {
           </div>
           <div>
             <h3 className="text-xs text-gray-400 uppercase font-semibold">LinkedIn</h3>
-            <p className="text-white font-medium text-sm">linkedin.com/in/msvreddy02[cite: 1]</p>
+            <p className="text-white font-medium text-sm">linkedin.com/in/msvreddy02</p>
           </div>
         </a>
       </div>

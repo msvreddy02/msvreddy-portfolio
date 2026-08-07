@@ -6,11 +6,12 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Experience & Projects', path: '/projects' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Experience & Projects', path: '/projects' },
+  { name: 'Certifications', path: '/certifications' },
+  { name: 'Contact', path: '/contact' },
+];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0B0F17]/70 backdrop-blur-md border-b border-white/10 shadow-lg">
