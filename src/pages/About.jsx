@@ -2,16 +2,17 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Briefcase, CheckCircle2, Award, Download, ExternalLink, Code2, Sparkles, Building2 } from 'lucide-react';
 import { aboutData } from '../data/aboutData';
+import TiltCard from '../components/TiltCard';
 
 export default function About() {
   return (
     <div className="relative min-h-screen pt-28 pb-16 px-6 max-w-5xl mx-auto space-y-14 overflow-hidden">
       
-      {/* 🔮 Background Glow Orbs */}
+      {/* Background Glow Orbs */}
       <div className="absolute top-20 left-1/4 w-96 h-96 bg-indigo-600/15 rounded-full blur-[140px] pointer-events-none animate-pulse"></div>
       <div className="absolute top-1/2 right-10 w-80 h-80 bg-purple-600/15 rounded-full blur-[140px] pointer-events-none animate-pulse"></div>
 
-      {/* Top Header & Intro Banner */}
+      {/* Top Header */}
       <motion.div 
         initial={{ opacity: 0, y: 15 }} 
         animate={{ opacity: 1, y: 0 }} 
@@ -50,7 +51,7 @@ export default function About() {
         </div>
       </motion.div>
 
-      {/* Quick Stats Grid with Auto Text-Fitting */}
+      {/* Quick Stats Grid */}
       <motion.div 
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -86,7 +87,7 @@ export default function About() {
           </p>
         </div>
 
-        {/* Current Position Highlights */}
+        {/* Current Position */}
         <div className="glass-card p-7 rounded-2xl border-l-4 border-l-indigo-500 border border-white/10 flex flex-col justify-between gap-6 hover:border-indigo-500/30 transition">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -101,7 +102,6 @@ export default function About() {
             <p className="text-sm text-gray-400">Eidiko Systems Integrators Pvt. Ltd. | Hyderabad, India</p>
           </div>
 
-          {/* Education Mini Overview */}
           <div className="pt-4 border-t border-white/10 space-y-2">
             <div className="flex items-center gap-2 text-indigo-300 font-semibold text-sm">
               <GraduationCap size={18} />
@@ -117,7 +117,6 @@ export default function About() {
             </ul>
           </div>
         </div>
-
       </div>
 
       {/* Core Technical Stack Badges */}
@@ -137,8 +136,8 @@ export default function About() {
         </div>
       </section>
 
-      {/* Competencies Section */}
-      <section className="space-y-6 relative z-10">
+      {/* Competencies Section with 3D Holographic Tilt Cards */}
+      <section className="space-y-6 relative z-10 [perspective:1000px]">
         <div className="flex items-center gap-3 text-white font-bold text-2xl">
           <Award className="text-indigo-400" size={28} />
           <h2>Professional Competencies & Specializations</h2>
@@ -146,24 +145,20 @@ export default function About() {
 
         <div className="grid sm:grid-cols-3 gap-6">
           {aboutData.competencies.map((cert, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="glass-card p-6 rounded-2xl space-y-3 relative overflow-hidden border border-white/10 flex flex-col justify-between hover:border-indigo-500/40 transition-all hover:scale-[1.02]"
-            >
-              <div className="space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-400 font-semibold px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 inline-block">
-                  {cert.category}
-                </span>
-                <h3 className="text-white font-bold text-base leading-snug">{cert.title}</h3>
-                <p className="text-xs text-gray-400 leading-relaxed">{cert.description}</p>
+            <TiltCard key={idx} className="h-full">
+              <div className="h-full glass-card p-6 rounded-2xl space-y-3 relative overflow-hidden border border-white/10 flex flex-col justify-between hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20 transition-all bg-gradient-to-b from-slate-900/90 to-slate-950/90">
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-400 font-semibold px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20 inline-block">
+                    {cert.category}
+                  </span>
+                  <h3 className="text-white font-bold text-base leading-snug">{cert.title}</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed">{cert.description}</p>
+                </div>
+                <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400 font-medium">
+                  {/* <span>Issuer: <strong className="text-gray-300">{cert.issuer}</strong></span> */}
+                </div>
               </div>
-              <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs text-gray-400 font-medium">
-                <span>Issuer: <strong className="text-gray-300">{cert.issuer}</strong></span>
-              </div>
-            </motion.div>
+            </TiltCard>
           ))}
         </div>
       </section>

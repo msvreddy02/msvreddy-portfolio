@@ -1,5 +1,50 @@
 export const projectsData = [
   {
+  id: 'art-fetal-rhd-screening-nhsbt',
+  title: 'ART Fetal RhD Screening System',
+  client: 'NHS Blood and Transplant (NHSBT)',
+  role: 'IBM BAW Developer (Development Support)',
+  category: 'IBM BAW',
+  description:
+    'Provided development support for clinical diagnostic workflows orchestrating sample plate processing from MiPaaS middleware to final LIMS export with real-time laboratory dashboards.',
+  tech: [
+    'IBM BAW',
+    'Process Designer',
+    'CSHS',
+    'AJAX Services',
+    'TWSearch API',
+    'REST APIs',
+    'JavaScript'
+  ],
+  highlights: [
+    {
+      title: 'Workflow Support & Orchestration',
+      text: 'Supported a 2-lane BPD automating diagnostic plate ingest from MiPaaS middleware to final LIMS export.'
+    },
+    {
+      title: 'Real-Time Lab Dashboard',
+      text: 'Maintained zero-refresh worklists using Coach Views and AJAX callbacks to ensure responsive UI updates for lab staff.'
+    },
+    {
+      title: 'Search & Audit Optimization',
+      text: 'Enhanced TWSearch scripts and custom business aliases for faster filtering and compliance with 9-month audit retention lookups.'
+    },
+    {
+      title: 'Triage & Decision UI Maintenance',
+      text: 'Supported Coach views displaying microplate layouts, whole-plate PASS/FAIL statuses, and audit trail validations.'
+    },
+    {
+      title: 'Engine Fault & Error Resolution',
+      text: 'Resolved deep server-engine serialization issues (CWTBG0019E) and race conditions by converting long-polling steps to async calls.'
+    },
+    {
+      title: 'Mock Harness & Testing',
+      text: 'Maintained mock-data toggles alongside live REST services to validate features quickly without external lab hardware dependencies.'
+    }
+  ]
+},
+  
+  {
     id: "digital-automation-conventional",
     title: "Digital Automation for Conventional Services",
     client: "Ahli Bank",
@@ -44,4 +89,5 @@ export const projectsData = [
       { title: "System RCA & Diagnostics", text: "Executed log analysis and queue performance tuning across BAW and Process Engine components." }
     ]
   }
+  
 ];
